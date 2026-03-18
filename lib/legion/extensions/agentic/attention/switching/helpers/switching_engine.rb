@@ -16,6 +16,8 @@ module Legion
               end
 
               def register_task(name:, task_type: :analytical, complexity: 0.5)
+                return nil unless TASK_SET_TYPES.include?(task_type.to_sym)
+
                 prune_tasks_if_needed
                 task = TaskSet.new(name: name, task_type: task_type, complexity: complexity)
                 @task_sets[task.id] = task

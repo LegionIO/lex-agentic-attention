@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-03-18
+
+### Changed
+- Enforce TASK_SET_TYPES validation in SwitchingEngine#register_task (returns nil for invalid task_type)
+- Enforce INPUT_TYPES validation in RelevanceEngine#submit_input (returns nil for invalid input_type)
+- Enforce EFFECT_TYPES validation in RelevanceEngine#submit_input (returns nil for invalid effect_type)
+- ATTENTION_MODES and TARGET_STATES in Regulation skipped: internally computed by state machine, not external input params
+
 ## [0.1.1] - 2026-03-18
 
 ### Changed

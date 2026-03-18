@@ -16,6 +16,34 @@ RSpec.describe Legion::Extensions::Agentic::Attention::RelevanceTheory::Helpers:
       engine.submit_input(content: 'x', input_type: :assertion, context: :c)
       expect(engine.history.last[:event]).to eq(:submitted)
     end
+
+    it 'rejects invalid input_type' do
+      result = engine.submit_input(content: 'test', input_type: :nonexistent_type, context: :general)
+      expect(result).to be_nil
+    end
+
+    it 'accepts all INPUT_TYPES' do
+      constants = Legion::Extensions::Agentic::Attention::RelevanceTheory::Helpers::Constants::INPUT_TYPES
+      constants.each do |val|
+        result = engine.submit_input(content: 'test', input_type: val, context: :general)
+        expect(result).not_to be_nil, "Expected #{val.inspect} to be accepted"
+      end
+    end
+
+    it 'rejects invalid effect_type' do
+      result = engine.submit_input(content: 'test', input_type: :assertion, context: :general,
+                                   effect_type: :nonexistent_effect)
+      expect(result).to be_nil
+    end
+
+    it 'accepts all EFFECT_TYPES' do
+      constants = Legion::Extensions::Agentic::Attention::RelevanceTheory::Helpers::Constants::EFFECT_TYPES
+      constants.each do |val|
+        result = engine.submit_input(content: 'test', input_type: :assertion, context: :general,
+                                     effect_type: val)
+        expect(result).not_to be_nil, "Expected #{val.inspect} to be accepted"
+      end
+    end
   end
 
   describe '#assess_relevance' do

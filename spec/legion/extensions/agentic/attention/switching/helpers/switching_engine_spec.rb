@@ -12,6 +12,19 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Switching::Helpers::Switc
       task = engine.register_task(name: 'test')
       expect(task).to be_a(Legion::Extensions::Agentic::Attention::Switching::Helpers::TaskSet)
     end
+
+    it 'rejects invalid task_type' do
+      result = engine.register_task(name: 'bad', task_type: :nonexistent_type)
+      expect(result).to be_nil
+    end
+
+    it 'accepts all TASK_SET_TYPES' do
+      constants = Legion::Extensions::Agentic::Attention::Switching::Helpers::Constants::TASK_SET_TYPES
+      constants.each do |val|
+        result = engine.register_task(name: val.to_s, task_type: val)
+        expect(result).not_to be_nil, "Expected #{val.inspect} to be accepted"
+      end
+    end
   end
 
   describe '#activate_task' do

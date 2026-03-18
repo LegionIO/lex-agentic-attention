@@ -7,7 +7,7 @@
 Domain consolidation gem for attention, perception, and signal processing. Bundles 24 source extensions into one loadable unit under `Legion::Extensions::Agentic::Attention`.
 
 **Gem**: `lex-agentic-attention`
-**Version**: 0.1.1
+**Version**: 0.1.2
 **Namespace**: `Legion::Extensions::Agentic::Attention`
 
 ## Sub-Modules
@@ -47,6 +47,6 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 
 ```bash
 bundle install
-bundle exec rspec        # 2282 examples, 0 failures
+bundle exec rspec        # 2288 examples, 0 failures
 bundle exec rubocop      # 0 offenses
 ```

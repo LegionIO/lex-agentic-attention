@@ -19,6 +19,9 @@ module Legion
               def submit_input(content:, input_type:, context:, cognitive_effect: DEFAULT_EFFECT,
                                processing_effort: DEFAULT_EFFORT, effect_type: :new_implication,
                                source_id: nil)
+                return nil unless INPUT_TYPES.include?(input_type.to_sym)
+                return nil unless EFFECT_TYPES.include?(effect_type.to_sym)
+
                 evict_oldest if @inputs.size >= MAX_INPUTS
 
                 input = CognitiveInput.new(
