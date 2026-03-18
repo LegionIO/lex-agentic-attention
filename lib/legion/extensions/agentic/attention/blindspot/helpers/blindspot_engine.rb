@@ -18,6 +18,8 @@ module Legion
               end
 
               def register_blindspot(domain:, discovered_by:, description:, severity: DEFAULT_SEVERITY)
+                return nil unless DISCOVERY_METHODS.include?(discovered_by.to_sym)
+
                 prune_blindspots_if_needed
                 blindspot = Blindspot.new(domain: domain, discovered_by: discovered_by,
                                           description: description, severity: severity)

@@ -14,6 +14,8 @@ module Legion
               end
 
               def create_filter(modality:, gate_threshold: DEFAULT_GATE_THRESHOLD)
+                return nil unless MODALITY_TYPES.include?(modality.to_sym)
+
                 prune_if_needed
                 filter = SensoryFilter.new(modality: modality, gate_threshold: gate_threshold)
                 @filters[filter.id] = filter

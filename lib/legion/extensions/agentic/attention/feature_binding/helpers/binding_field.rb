@@ -20,6 +20,7 @@ module Legion
 
               def register_feature(id:, dimension:, value:, source: :perception, salience: 0.5)
                 return @features[id] if @features.key?(id)
+                return nil unless FEATURE_DIMENSIONS.include?(dimension.to_sym)
                 return nil if @features.size >= MAX_FEATURES
 
                 @features[id] = Feature.new(id: id, dimension: dimension, value: value, source: source, salience: salience)

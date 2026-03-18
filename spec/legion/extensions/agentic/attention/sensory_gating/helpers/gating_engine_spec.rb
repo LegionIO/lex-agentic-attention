@@ -14,6 +14,20 @@ RSpec.describe Legion::Extensions::Agentic::Attention::SensoryGating::Helpers::G
       filter
       expect(engine.to_h[:total_filters]).to eq(1)
     end
+
+    it 'rejects invalid modality' do
+      result = engine.create_filter(modality: :nonexistent)
+      expect(result).to be_nil
+    end
+
+    it 'accepts all valid MODALITY_TYPES' do
+      constants = Legion::Extensions::Agentic::Attention::SensoryGating::Helpers::Constants
+      constants::MODALITY_TYPES.each do |mod|
+        f = engine.create_filter(modality: mod)
+        expect(f).not_to be_nil
+      end
+      expect(engine.to_h[:total_filters]).to eq(constants::MODALITY_TYPES.size)
+    end
   end
 
   describe '#process_stimulus' do
@@ -105,7 +119,8 @@ RSpec.describe Legion::Extensions::Agentic::Attention::SensoryGating::Helpers::G
     it 'prunes oldest filter when limit reached' do
       stub_const('Legion::Extensions::Agentic::Attention::SensoryGating::Helpers::Constants::MAX_FILTERS', 3)
       eng = described_class.new
-      4.times { |i| eng.create_filter(modality: :"mod#{i}") }
+      modalities = %i[visual auditory textual semantic]
+      modalities.each { |m| eng.create_filter(modality: m) }
       expect(eng.to_h[:total_filters]).to eq(3)
     end
   end

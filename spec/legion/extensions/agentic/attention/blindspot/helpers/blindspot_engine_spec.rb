@@ -18,6 +18,21 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Blindspot::Helpers::Blind
   end
 
   describe '#register_blindspot' do
+    it 'rejects invalid discovered_by' do
+      result = engine.register_blindspot(
+        domain: :reasoning, discovered_by: :nonexistent, description: 'test'
+      )
+      expect(result).to be_nil
+    end
+
+    it 'accepts all valid DISCOVERY_METHODS' do
+      constants = Legion::Extensions::Agentic::Attention::Blindspot::Helpers::Constants
+      constants::DISCOVERY_METHODS.each_with_index do |method, i|
+        b = engine.register_blindspot(domain: :"d#{i}", discovered_by: method, description: "test #{i}")
+        expect(b).not_to be_nil
+      end
+    end
+
     it 'returns a Blindspot object' do
       expect(blindspot).to be_a(Legion::Extensions::Agentic::Attention::Blindspot::Helpers::Blindspot)
     end

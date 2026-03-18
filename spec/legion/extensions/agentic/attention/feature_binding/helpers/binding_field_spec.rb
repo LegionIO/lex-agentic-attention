@@ -24,6 +24,20 @@ RSpec.describe Legion::Extensions::Agentic::Attention::FeatureBinding::Helpers::
       expect(field.feature_count).to eq(1)
     end
 
+    it 'rejects invalid dimension' do
+      result = field.register_feature(id: 'f:bad', dimension: :nonexistent, value: :x)
+      expect(result).to be_nil
+      expect(field.feature_count).to eq(0)
+    end
+
+    it 'accepts all valid FEATURE_DIMENSIONS' do
+      constants::FEATURE_DIMENSIONS.each_with_index do |dim, i|
+        f = field.register_feature(id: "f:#{i}", dimension: dim, value: i)
+        expect(f).not_to be_nil
+      end
+      expect(field.feature_count).to eq(constants::FEATURE_DIMENSIONS.size)
+    end
+
     it 'enforces MAX_FEATURES limit' do
       constants::MAX_FEATURES.times do |i|
         field.register_feature(id: "f:#{i}", dimension: :color, value: i)
