@@ -5,7 +5,7 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 ## Overview
 
 **Gem**: `lex-agentic-attention`
-**Version**: 0.1.1
+**Version**: 0.1.2
 **Namespace**: `Legion::Extensions::Agentic::Attention`
 
 ## Sub-Modules
@@ -37,6 +37,11 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 | `Attention::Priming` | `lex-priming` | Prior exposure boosts related processing |
 | `Attention::FeatureBinding` | `lex-feature-binding` | Binding separately-processed features into unified percepts |
 
+## Actors
+
+- `Attention::FeatureBinding::Actors::Decay` — interval actor, decays bound feature groups
+- `Attention::Schema::Actors::Decay` — interval actor, decays attention schema entries
+
 ## Installation
 
 ```ruby
@@ -47,7 +52,7 @@ gem 'lex-agentic-attention'
 
 ```bash
 bundle install
-bundle exec rspec        # 2282 examples, 0 failures
+bundle exec rspec        # 2288 examples, 0 failures
 bundle exec rubocop      # 0 offenses
 ```
 

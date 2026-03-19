@@ -39,6 +39,11 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 | `Attention::Priming` | `lex-priming` | Prior exposure boosts related processing |
 | `Attention::FeatureBinding` | `lex-feature-binding` | Binding separately-processed features into unified percepts |
 
+## Actors
+
+- `Attention::FeatureBinding::Actors::Decay` — interval actor, decays bound feature groups
+- `Attention::Schema::Actors::Decay` — interval actor, decays attention schema entries
+
 ## Tick Integration
 
 `Attention::Focus` maps to the `sensory_processing` tick phase via `filter_signals`.
