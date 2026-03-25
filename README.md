@@ -5,7 +5,7 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 ## Overview
 
 **Gem**: `lex-agentic-attention`
-**Version**: 0.1.2
+**Version**: 0.1.0
 **Namespace**: `Legion::Extensions::Agentic::Attention`
 
 ## Sub-Modules
