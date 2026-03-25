@@ -24,7 +24,7 @@ module Legion
                 [(0.6...0.8),  :vivid],
                 [(0.4...0.6),  :moderate],
                 [(0.2...0.4),  :dim],
-                [(..0.2),      :dark]
+                [..0.2,        :dark]
               ].freeze
 
               COMPLEXITY_LABELS = [
@@ -32,7 +32,7 @@ module Legion
                 [(0.6...0.8),  :intricate],
                 [(0.4...0.6),  :balanced],
                 [(0.2...0.4),  :simple],
-                [(..0.2),      :minimal]
+                [..0.2,        :minimal]
               ].freeze
 
               def self.label_for(table, value)

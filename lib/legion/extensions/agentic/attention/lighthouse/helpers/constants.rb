@@ -33,7 +33,7 @@ module Legion
                 [(0.5...0.7),  :steady],
                 [(0.3...0.5),  :dim],
                 [(0.1...0.3),  :faint],
-                [(..0.1),      :dark]
+                [..0.1,        :dark]
               ].freeze
 
               def self.label_for(table, value)

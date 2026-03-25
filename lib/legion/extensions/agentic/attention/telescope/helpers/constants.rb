@@ -35,7 +35,7 @@ module Legion
                 [(0.65...0.85), :clear],
                 [(0.45...0.65), :hazy],
                 [(0.25...0.45), :blurry],
-                [(..0.25),      :blind]
+                [..0.25,        :blind]
               ].freeze
 
               # Distance labels (range-based, descending)
@@ -44,7 +44,7 @@ module Legion
                 [(0.65...0.85), :deep],
                 [(0.4...0.65),  :medium],
                 [(0.2...0.4),   :near],
-                [(..0.2),       :myopic]
+                [..0.2,         :myopic]
               ].freeze
 
               def self.label_for(table, value)
