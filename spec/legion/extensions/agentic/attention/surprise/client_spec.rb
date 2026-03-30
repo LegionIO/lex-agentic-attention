@@ -107,7 +107,7 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Surprise::Client do
 
     it 'cooldown prevents orienting spam from the same domain' do
       domain = :noisy_sensor
-      results = 5.times.map { client.evaluate_surprise(domain: domain, predicted: 0.0, actual: 1.0, valence: :negative) }
+      results = Array.new(5) { client.evaluate_surprise(domain: domain, predicted: 0.0, actual: 1.0, valence: :negative) }
       orienting_count = results.count { |r| r[:orienting_triggered] }
       # Only the first should fire (cooldown blocks subsequent)
       expect(orienting_count).to eq(1)

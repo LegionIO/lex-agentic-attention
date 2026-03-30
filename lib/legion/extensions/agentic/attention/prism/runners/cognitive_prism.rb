@@ -15,7 +15,7 @@ module Legion
                 prism = engine || default_engine
                 prism.create_beam(domain: domain, content: content, beam_id: beam_id)
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_prism] create_beam failed: #{e.message}"
+                log.warn("[cognitive_prism] create_beam failed: #{e.message}")
                 { success: false, error: e.message }
               end
 
@@ -23,7 +23,7 @@ module Legion
                 prism = engine || default_engine
                 prism.decompose(beam_id)
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_prism] decompose failed: #{e.message}"
+                log.warn("[cognitive_prism] decompose failed: #{e.message}")
                 { success: false, error: e.message }
               end
 
@@ -31,7 +31,7 @@ module Legion
                 prism = engine || default_engine
                 prism.recompose(component_ids)
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_prism] recompose failed: #{e.message}"
+                log.warn("[cognitive_prism] recompose failed: #{e.message}")
                 { success: false, error: e.message }
               end
 
@@ -39,7 +39,7 @@ module Legion
                 prism = engine || default_engine
                 prism.attenuate_all!(rate: rate)
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_prism] attenuate_all failed: #{e.message}"
+                log.warn("[cognitive_prism] attenuate_all failed: #{e.message}")
                 { success: false, error: e.message }
               end
 

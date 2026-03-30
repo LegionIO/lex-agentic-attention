@@ -7,8 +7,8 @@ module Legion
         module Lens
           module Runners
             module CognitiveLens
-              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers) &&
-                                                          Legion::Extensions::Helpers.const_defined?(:Lex)
+              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers, false) &&
+                                                          Legion::Extensions::Helpers.const_defined?(:Lex, false)
 
               def create_lens(lens_type:, magnification: nil, clarity: 1.0, distortion: nil, aperture: nil,
                               engine: nil, **)
@@ -22,11 +22,11 @@ module Legion
                   distortion:    distortion,
                   aperture:      aperture
                 )
-                Legion::Logging.debug "[cognitive_lens] created lens id=#{lens.id} type=#{lens_type} " \
-                                      "mag=#{lens.magnification.round(2)} clarity=#{lens.clarity.round(2)}"
+                log.debug("[cognitive_lens] created lens id=#{lens.id} type=#{lens_type} " \
+                          "mag=#{lens.magnification.round(2)} clarity=#{lens.clarity.round(2)}")
                 { success: true, lens: lens.to_h }
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_lens] create_lens failed: #{e.message}"
+                log.warn("[cognitive_lens] create_lens failed: #{e.message}")
                 { success: false, error: e.message }
               end
 
@@ -35,10 +35,10 @@ module Legion
 
                 eng    = engine || lens_engine
                 result = eng.stack_lenses(lens_ids: lens_ids, stack_id: stack_id)
-                Legion::Logging.debug "[cognitive_lens] stacked #{lens_ids.size} lenses stack_id=#{result[:stack_id]}"
+                log.debug("[cognitive_lens] stacked #{lens_ids.size} lenses stack_id=#{result[:stack_id]}")
                 { success: true, stack_id: result[:stack_id], stack: result[:stack].to_h }
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_lens] stack_lenses failed: #{e.message}"
+                log.warn("[cognitive_lens] stack_lenses failed: #{e.message}")
                 { success: false, error: e.message }
               end
 
@@ -47,14 +47,14 @@ module Legion
                 result = eng.view_through_stack(stack_id: stack_id, content: content)
                 { success: true, **result }
               rescue ArgumentError => e
-                Legion::Logging.warn "[cognitive_lens] view_through_stack failed: #{e.message}"
+                log.warn("[cognitive_lens] view_through_stack failed: #{e.message}")
                 { success: false, error: e.message }
               end
 
               def degrade_all(rate: Helpers::Constants::SMUDGE_RATE_DEFAULT, engine: nil, **)
                 eng    = engine || lens_engine
                 result = eng.degrade_all!(rate: rate)
-                Legion::Logging.debug "[cognitive_lens] degraded #{result[:degraded]} lenses at rate=#{rate}"
+                log.debug("[cognitive_lens] degraded #{result[:degraded]} lenses at rate=#{rate}")
                 { success: true, **result }
               end
 
