@@ -27,7 +27,7 @@ module Legion
                 beam.decompose!
                 beam.components.each { |c| @components["#{beam_id}:#{c.band}"] = c }
 
-                Legion::Logging.debug "[cognitive_prism] decompose: beam=#{beam_id[0..7]} components=#{beam.components.size} purity=#{beam.purity.round(4)}"
+                Legion::Logging.debug("[cognitive_prism] decompose: beam=#{beam_id[0..7]} components=#{beam.components.size} purity=#{beam.purity.round(4)}") # rubocop:disable Legion/HelperMigration/DirectLogging
                 {
                   success:         true,
                   beam_id:         beam_id,

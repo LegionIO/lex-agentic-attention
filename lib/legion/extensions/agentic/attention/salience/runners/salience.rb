@@ -7,15 +7,15 @@ module Legion
         module Salience
           module Runners
             module Salience
-              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers) &&
-                                                          Legion::Extensions::Helpers.const_defined?(:Lex)
+              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers, false) &&
+                                                          Legion::Extensions::Helpers.const_defined?(:Lex, false)
 
               def compute_salience(tick_results: {}, **)
                 integrated = Helpers::SignalIntegrator.integrate(tick_results: tick_results)
                 salience_map.update(integrated)
 
-                Legion::Logging.debug "[salience] compute: overall=#{salience_map.overall_salience.round(3)} " \
-                                      "urgency=#{salience_map.urgency_level} dominant=#{salience_map.dominant_source}"
+                log.debug("[salience] compute: overall=#{salience_map.overall_salience.round(3)} " \
+                          "urgency=#{salience_map.urgency_level} dominant=#{salience_map.dominant_source}")
 
                 {
                   overall:         salience_map.overall_salience,
@@ -29,7 +29,7 @@ module Legion
               end
 
               def salience_status(**)
-                Legion::Logging.debug "[salience] status: urgency=#{salience_map.urgency_level} trend=#{salience_map.salience_trend}"
+                log.debug("[salience] status: urgency=#{salience_map.urgency_level} trend=#{salience_map.salience_trend}")
                 {
                   overall:        salience_map.overall_salience,
                   urgency:        salience_map.urgency_level,
@@ -42,7 +42,7 @@ module Legion
 
               def salience_for(source:, **)
                 data = salience_map.current_map[source]
-                Legion::Logging.debug "[salience] salience_for: source=#{source} salience=#{data || 0.0}"
+                log.debug("[salience] salience_for: source=#{source} salience=#{data || 0.0}")
                 { source: source, salience: data || 0.0, urgency: salience_map.urgency_level }
               end
 

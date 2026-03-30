@@ -127,7 +127,7 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Spotlight::Helpers::Spotl
     end
 
     it 'marks all targets as attended' do
-      ids = 3.times.map { |i| register(label: "task #{i}")[:target_id] }
+      ids = Array.new(3) { |i| register(label: "task #{i}")[:target_id] }
       engine.scan
       ids.each do |id|
         expect(engine.targets[id].last_attended_at).to be_a(Time)

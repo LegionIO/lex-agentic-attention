@@ -19,7 +19,7 @@ module Legion
                 concept = network.prime(name, boost: boost, source: source, spread: spread)
                 return { success: false, reason: :not_found } unless concept
 
-                Legion::Logging.debug "[priming] primed #{name} activation=#{concept.activation.round(4)} spread=#{spread}"
+                log.debug("[priming] primed #{name} activation=#{concept.activation.round(4)} spread=#{spread}")
                 { success: true, concept: concept.to_h, active_primes: network.active_prime_count }
               end
 
@@ -31,14 +31,14 @@ module Legion
               def link_concepts(name_a:, name_b:, strength: nil, **)
                 strength ||= Helpers::Constants::DEFAULT_ASSOCIATION_STRENGTH
                 network.link(name_a, name_b, strength: strength)
-                Legion::Logging.debug "[priming] linked #{name_a} <-> #{name_b} strength=#{strength}"
+                log.debug("[priming] linked #{name_a} <-> #{name_b} strength=#{strength}")
                 { success: true, name_a: name_a, name_b: name_b, strength: strength }
               end
 
               def update_priming(**)
                 network.decay_all
                 primed = network.primed_concepts
-                Legion::Logging.debug "[priming] tick: concepts=#{network.concept_count} active=#{primed.size}"
+                log.debug("[priming] tick: concepts=#{network.concept_count} active=#{primed.size}")
                 { success: true, active_primes: primed.size, concept_count: network.concept_count }
               end
 

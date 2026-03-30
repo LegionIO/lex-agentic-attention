@@ -8,7 +8,7 @@ module Legion
       module Attention
         module FeatureBinding
           module Actor
-            class Decay < Legion::Extensions::Actors::Every
+            class Decay < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
               def runner_class
                 Legion::Extensions::Agentic::Attention::FeatureBinding::Runners::FeatureBinding
               end

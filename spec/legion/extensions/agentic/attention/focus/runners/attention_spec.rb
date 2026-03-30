@@ -58,7 +58,7 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Focus::Runners::Attention
     end
 
     it 'enforces attentional capacity' do
-      signals = 10.times.map { |i| { salience: 0.9, domain: :"domain_#{i}", novelty: 0.9 } }
+      signals = Array.new(10) { |i| { salience: 0.9, domain: :"domain_#{i}", novelty: 0.9 } }
       result = client.filter_signals(signals: signals)
       expect(result[:spotlight]).to be <= Legion::Extensions::Agentic::Attention::Focus::Helpers::Constants::ATTENTIONAL_CAPACITY
     end

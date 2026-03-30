@@ -7,8 +7,8 @@ module Legion
         module Focus
           module Runners
             module Attention
-              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers) &&
-                                                          Legion::Extensions::Helpers.const_defined?(:Lex)
+              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers, false) &&
+                                                          Legion::Extensions::Helpers.const_defined?(:Lex, false)
 
               def filter_signals(signals: [], active_wonders: [], **)
                 return { filtered: [], spotlight: 0, peripheral: 0, background: 0, dropped: 0 } if signals.empty?
@@ -19,9 +19,9 @@ module Legion
 
                 habituation_model.decay_all
 
-                Legion::Logging.debug "[attention] filtered #{signals.size}->#{categorized[:spotlight].size + categorized[:peripheral].size} " \
-                                      "(spotlight=#{categorized[:spotlight].size} peripheral=#{categorized[:peripheral].size} " \
-                                      "background=#{categorized[:background].size} dropped=#{categorized[:dropped]})"
+                log.debug("[attention] filtered #{signals.size}->#{categorized[:spotlight].size + categorized[:peripheral].size} " \
+                          "(spotlight=#{categorized[:spotlight].size} peripheral=#{categorized[:peripheral].size} " \
+                          "background=#{categorized[:background].size} dropped=#{categorized[:dropped]})")
 
                 {
                   filtered:   categorized[:spotlight] + categorized[:peripheral],
@@ -44,13 +44,13 @@ module Legion
 
               def focus_on(domain:, reason: nil, **)
                 result = focus_manager.focus_on(domain, reason: reason)
-                Legion::Logging.info "[attention] focus_on #{domain}: #{result}"
+                log.info("[attention] focus_on #{domain}: #{result}")
                 { status: result, domain: domain }
               end
 
               def release_focus(domain:, **)
                 result = focus_manager.release(domain)
-                Legion::Logging.info "[attention] release_focus #{domain}: #{result}"
+                log.info("[attention] release_focus #{domain}: #{result}")
                 { status: result, domain: domain }
               end
 

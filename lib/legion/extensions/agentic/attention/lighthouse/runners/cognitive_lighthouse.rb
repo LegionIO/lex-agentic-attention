@@ -21,8 +21,8 @@ module Legion
                   luminosity:  luminosity,
                   sweep_angle: sweep_angle
                 )
-                Legion::Logging.debug "[lighthouse] lit beacon: type=#{beacon_type} domain=#{domain} " \
-                                      "luminosity=#{beacon.luminosity}"
+                log.debug("[lighthouse] lit beacon: type=#{beacon_type} domain=#{domain} " \
+                          "luminosity=#{beacon.luminosity}")
                 { success: true, beacon: beacon.to_h }
               rescue ArgumentError => e
                 { success: false, error: e.message }
@@ -32,8 +32,8 @@ module Legion
                 eng = resolve_engine(engine)
                 fog = eng.create_fog(fog_type: fog_type, domain: domain,
                                      density: density, extent: extent)
-                Legion::Logging.debug "[lighthouse] created fog: type=#{fog_type} domain=#{domain} " \
-                                      "density=#{fog.density}"
+                log.debug("[lighthouse] created fog: type=#{fog_type} domain=#{domain} " \
+                          "density=#{fog.density}")
                 { success: true, fog: fog.to_h }
               rescue ArgumentError => e
                 { success: false, error: e.message }
@@ -42,8 +42,8 @@ module Legion
               def sweep(beacon_id:, fog_id:, engine: nil, **)
                 eng    = resolve_engine(engine)
                 result = eng.sweep(beacon_id: beacon_id, fog_id: fog_id)
-                Legion::Logging.debug "[lighthouse] sweep: beacon=#{beacon_id} fog=#{fog_id} " \
-                                      "reduction=#{result[:reduction]}"
+                log.debug("[lighthouse] sweep: beacon=#{beacon_id} fog=#{fog_id} " \
+                          "reduction=#{result[:reduction]}")
                 { success: true, **result }
               rescue ArgumentError => e
                 { success: false, error: e.message }

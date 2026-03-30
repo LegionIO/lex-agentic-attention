@@ -30,7 +30,7 @@ module Legion
   module Extensions
     module Agentic
       module Attention
-        extend Legion::Extensions::Core if Legion::Extensions.const_defined? :Core
+        extend Legion::Extensions::Core if Legion::Extensions.const_defined? :Core, false
 
         def self.remote_invocable?
           false

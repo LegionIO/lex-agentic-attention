@@ -7,8 +7,8 @@ module Legion
         module Surprise
           module Runners
             module Surprise
-              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers) &&
-                                                          Legion::Extensions::Helpers.const_defined?(:Lex)
+              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers, false) &&
+                                                          Legion::Extensions::Helpers.const_defined?(:Lex, false)
 
               # Evaluate a single prediction-outcome pair and compute surprise magnitude.
               # magnitude = |predicted - actual| * sensitivity * valence_weight, clamped to [0,1]
@@ -35,9 +35,9 @@ module Legion
 
                 if orienting
                   record_cooldown(domain)
-                  Legion::Logging.debug "[surprise] orienting response triggered: domain=#{domain} magnitude=#{magnitude.round(3)}"
+                  log.debug("[surprise] orienting response triggered: domain=#{domain} magnitude=#{magnitude.round(3)}")
                 else
-                  Legion::Logging.debug "[surprise] surprise recorded: domain=#{domain} magnitude=#{magnitude.round(3)} orienting=false"
+                  log.debug("[surprise] surprise recorded: domain=#{domain} magnitude=#{magnitude.round(3)} orienting=false")
                 end
 
                 { success: true, surprise_event: event.to_h, orienting_triggered: orienting }
@@ -65,7 +65,7 @@ module Legion
                 tick_cooldowns
 
                 orienting_count = events.count { |e| e[:orienting] }
-                Legion::Logging.debug "[surprise] tick update: evaluated=#{events.size} orienting=#{orienting_count}"
+                log.debug("[surprise] tick update: evaluated=#{events.size} orienting=#{orienting_count}")
 
                 {
                   success:         true,
@@ -80,7 +80,7 @@ module Legion
                 top     = store.most_surprising(1).first
                 avg_mag = stats[:average_magnitude]
 
-                Legion::Logging.debug "[surprise] stats: total=#{stats[:total_events]} domains=#{stats[:domain_count]}"
+                log.debug("[surprise] stats: total=#{stats[:total_events]} domains=#{stats[:domain_count]}")
 
                 {
                   success:                true,
@@ -97,7 +97,7 @@ module Legion
                 baseline    = store.baseline_for(domain)
                 domain_events = store.by_domain(domain)
 
-                Legion::Logging.debug "[surprise] domain_sensitivity: domain=#{domain} sensitivity=#{sensitivity.round(3)}"
+                log.debug("[surprise] domain_sensitivity: domain=#{domain} sensitivity=#{sensitivity.round(3)}")
 
                 {
                   success:     true,
@@ -110,7 +110,7 @@ module Legion
 
               def recent_surprises(count: 10, **)
                 events = store.recent(count)
-                Legion::Logging.debug "[surprise] recent_surprises: count=#{events.size}"
+                log.debug("[surprise] recent_surprises: count=#{events.size}")
                 { success: true, events: events.map(&:to_h), count: events.size }
               end
 
@@ -121,7 +121,7 @@ module Legion
                 steps.times { habituation_model.sensitize(domain) }
                 new_sensitivity = habituation_model.sensitivity_for(domain)
 
-                Legion::Logging.debug "[surprise] reset_habituation: domain=#{domain} #{old_sensitivity.round(3)} -> #{new_sensitivity.round(3)}"
+                log.debug("[surprise] reset_habituation: domain=#{domain} #{old_sensitivity.round(3)} -> #{new_sensitivity.round(3)}")
 
                 { success: true, domain: domain, old_sensitivity: old_sensitivity.round(4), new_sensitivity: new_sensitivity.round(4) }
               end
@@ -154,14 +154,14 @@ module Legion
               end
 
               def should_orient?(domain, magnitude, threshold)
-                return false if magnitude < threshold
-                return false if on_cooldown?(domain)
+                return false if magnitude < threshold # rubocop:disable Legion/Extension/RunnerReturnHash
+                return false if on_cooldown?(domain) # rubocop:disable Legion/Extension/RunnerReturnHash
 
                 true
               end
 
               def extract_predictions(tick_result)
-                return [] unless tick_result.is_a?(Hash)
+                return [] unless tick_result.is_a?(Hash) # rubocop:disable Legion/Extension/RunnerReturnHash
 
                 tick_result.fetch(:predictions, [])
               end

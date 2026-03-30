@@ -7,14 +7,14 @@ module Legion
         module Arousal
           module Runners
             module Arousal
-              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers) &&
-                                                          Legion::Extensions::Helpers.const_defined?(:Lex)
+              include Legion::Extensions::Helpers::Lex if Legion::Extensions.const_defined?(:Helpers, false) &&
+                                                          Legion::Extensions::Helpers.const_defined?(:Lex, false)
 
               def stimulate(amount: nil, source: :unknown, **)
                 model = arousal_model
                 amount ||= Helpers::Constants::BOOST_FACTOR
                 new_level = model.stimulate(amount: amount, source: source)
-                Legion::Logging.debug "[arousal] stimulate: source=#{source} amount=#{amount.round(2)} level=#{new_level.round(3)}"
+                log.debug("[arousal] stimulate: source=#{source} amount=#{amount.round(2)} level=#{new_level.round(3)}")
                 {
                   success: true,
                   arousal: new_level,
@@ -27,7 +27,7 @@ module Legion
                 model = arousal_model
                 amount ||= Helpers::Constants::CALM_FACTOR
                 new_level = model.calm(amount: amount)
-                Legion::Logging.debug "[arousal] calm: amount=#{amount.round(2)} level=#{new_level.round(3)}"
+                log.debug("[arousal] calm: amount=#{amount.round(2)} level=#{new_level.round(3)}")
                 {
                   success: true,
                   arousal: new_level,
@@ -39,7 +39,7 @@ module Legion
                 model = arousal_model
                 model.decay
                 perf = model.performance
-                Legion::Logging.debug "[arousal] update: level=#{model.arousal.round(3)} label=#{model.arousal_label} perf=#{perf.round(3)}"
+                log.debug("[arousal] update: level=#{model.arousal.round(3)} label=#{model.arousal_label} perf=#{perf.round(3)}")
                 {
                   success:     true,
                   arousal:     model.arousal,
@@ -54,7 +54,7 @@ module Legion
                 optimal = model.optimal_for(task_complexity)
                 msg = "[arousal] performance: complexity=#{task_complexity} " \
                       "arousal=#{model.arousal.round(3)} optimal=#{optimal} perf=#{perf.round(3)}"
-                Legion::Logging.debug msg
+                log.debug(msg)
                 {
                   success:         true,
                   performance:     perf,
@@ -67,7 +67,7 @@ module Legion
               def arousal_status(**)
                 model = arousal_model
                 perf = model.performance
-                Legion::Logging.debug "[arousal] status: level=#{model.arousal.round(3)} label=#{model.arousal_label}"
+                log.debug("[arousal] status: level=#{model.arousal.round(3)} label=#{model.arousal_label}")
                 {
                   success:      true,
                   arousal:      model.arousal,
@@ -83,7 +83,7 @@ module Legion
                 optimal = model.optimal_for(task_complexity)
                 perf = model.performance(task_complexity: task_complexity)
                 guidance = compute_guidance(current, optimal)
-                Legion::Logging.debug "[arousal] guidance: complexity=#{task_complexity} current=#{current.round(3)} optimal=#{optimal} guidance=#{guidance}"
+                log.debug("[arousal] guidance: complexity=#{task_complexity} current=#{current.round(3)} optimal=#{optimal} guidance=#{guidance}")
                 {
                   success:         true,
                   guidance:        guidance,
