@@ -12,7 +12,7 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Spotlight::Client do
     expect(client).to respond_to(:scan_targets)
     expect(client).to respond_to(:check_peripheral)
     expect(client).to respond_to(:check_capture)
-    expect(client).to respond_to(:release_focus)
+    expect(client).to respond_to(:release_spotlight)
     expect(client).to respond_to(:spotlight_report)
     expect(client).to respond_to(:most_salient)
     expect(client).to respond_to(:spotlight_state)

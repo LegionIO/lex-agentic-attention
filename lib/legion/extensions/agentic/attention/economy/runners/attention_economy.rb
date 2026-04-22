@@ -66,9 +66,9 @@ module Legion
                 result
               end
 
-              def attention_status(**)
+              def attention_economy_status(**)
                 report = attention_budget.budget_report
-                log.debug("[attention] status: utilization=#{report[:utilization]} demands=#{report[:demand_count]}")
+                log.debug("[attention] economy status: utilization=#{report[:utilization]} demands=#{report[:demand_count]}")
                 report
               end
 

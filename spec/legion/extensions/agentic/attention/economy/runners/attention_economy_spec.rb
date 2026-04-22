@@ -133,9 +133,9 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Economy::Runners::Attenti
     end
   end
 
-  describe '#attention_status' do
+  describe '#attention_economy_status' do
     it 'returns budget report keys' do
-      result = client.attention_status
+      result = client.attention_economy_status
       %i[total_budget spent available utilization demand_count].each do |key|
         expect(result).to have_key(key)
       end
@@ -143,7 +143,7 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Economy::Runners::Attenti
 
     it 'reflects demand count' do
       add_task
-      expect(client.attention_status[:demand_count]).to eq(1)
+      expect(client.attention_economy_status[:demand_count]).to eq(1)
     end
   end
 

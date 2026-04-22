@@ -74,4 +74,27 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Blink::Runners::Attention
       expect(result).to include(:total_stimuli, :total_blinks, :miss_rate)
     end
   end
+
+  describe '#decay_blink' do
+    it 'returns success true' do
+      result = runner.decay_blink
+      expect(result[:success]).to be true
+    end
+
+    it 'returns blink_active status' do
+      result = runner.decay_blink
+      expect(result).to have_key(:blink_active)
+    end
+
+    it 'returns recovery_level' do
+      result = runner.decay_blink
+      expect(result).to have_key(:recovery_level)
+    end
+
+    it 'reports recovery complete when no blink is active' do
+      result = runner.decay_blink
+      expect(result[:blink_active]).to be false
+      expect(result[:recovery_level]).to eq(1.0)
+    end
+  end
 end
