@@ -75,7 +75,7 @@ module Legion
               end
 
               def release_spotlight(**)
-                log.debug('[attention_spotlight] releasing focus')
+                log.debug('[attention_spotlight] releasing spotlight')
                 result = engine.release_focus
                 { success: true, **result }
               rescue StandardError => e

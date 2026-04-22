@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-$LOADED_FEATURES << 'legion/extensions/actors/every' unless $LOADED_FEATURES.include?('legion/extensions/actors/every')
 require 'legion/extensions/agentic/attention/signal_detection/actors/update'
 
 RSpec.describe Legion::Extensions::Agentic::Attention::SignalDetection::Actor::Update do
