@@ -35,6 +35,10 @@ module Legion
   end
 end
 
+# Prevent actor files that `require 'legion/extensions/actors/every'` from re-loading
+# the real gem file; the stub class above is already defined and sufficient for specs.
+$LOADED_FEATURES << 'legion/extensions/actors/every' unless $LOADED_FEATURES.include?('legion/extensions/actors/every')
+
 require 'legion/extensions/agentic/attention'
 
 RSpec.configure do |config|

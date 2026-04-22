@@ -13,18 +13,18 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Economy::Client do
     expect(client).to respond_to(:prioritized_demands)
     expect(client).to respond_to(:best_roi_demands)
     expect(client).to respond_to(:rebalance_budget)
-    expect(client).to respond_to(:attention_status)
+    expect(client).to respond_to(:attention_economy_status)
     expect(client).to respond_to(:attention_snapshot)
   end
 
   it 'starts with empty demands' do
-    expect(client.attention_status[:demand_count]).to eq(0)
+    expect(client.attention_economy_status[:demand_count]).to eq(0)
   end
 
   it 'maintains isolated state per instance' do
     c1 = described_class.new
     c2 = described_class.new
     c1.add_demand(label: 'solo', demand_type: :task, priority: 0.5, cost: 0.1)
-    expect(c2.attention_status[:demand_count]).to eq(0)
+    expect(c2.attention_economy_status[:demand_count]).to eq(0)
   end
 end

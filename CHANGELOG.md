@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7] - 2026-04-22
+### Fixed
+- Renamed Economy `attention_status` to `attention_economy_status` to resolve method collision with Focus
+- Renamed Spotlight `release_focus` to `release_spotlight` to resolve method collision with Focus
+### Added
+- 5 new maintenance actors: Salience::Compute (12s), Arousal::Update (30s), SignalDetection::Update (60s), Regulation::Update (60s), Blink::Decay (15s)
+- `decay_blink` method for attentional blink recovery
+
 ## [0.1.6] - 2026-04-15
 ### Changed
 - Set `mcp_tools?`, `mcp_tools_deferred?`, and `transport_required?` to `false` — internal cognitive pipeline extension

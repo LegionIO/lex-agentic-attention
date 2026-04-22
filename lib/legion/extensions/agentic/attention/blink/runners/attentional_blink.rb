@@ -66,6 +66,13 @@ module Legion
               def attentional_blink_stats(**)
                 engine.to_h
               end
+
+              def decay_blink(**)
+                active = engine.blink_active?
+                level  = engine.recovery_level
+                log.debug("[attentional_blink] decay tick: active=#{active} recovery=#{level.round(3)}")
+                { success: true, blink_active: active, recovery_level: level }
+              end
             end
           end
         end

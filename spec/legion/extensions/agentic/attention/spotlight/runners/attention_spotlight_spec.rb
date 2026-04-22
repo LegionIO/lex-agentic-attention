@@ -163,19 +163,19 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Spotlight::Runners::Atten
     end
   end
 
-  describe '#release_focus' do
+  describe '#release_spotlight' do
     it 'returns success true' do
-      expect(client.release_focus[:success]).to be true
+      expect(client.release_spotlight[:success]).to be true
     end
 
     it 'returns released true' do
-      expect(client.release_focus[:released]).to be true
+      expect(client.release_spotlight[:released]).to be true
     end
 
     it 'sets mode back to idle' do
       id = reg[:target_id]
       client.focus_spotlight(target_id: id)
-      client.release_focus
+      client.release_spotlight
       expect(client.spotlight_state[:spotlight][:mode]).to eq(:idle)
     end
   end
