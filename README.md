@@ -5,7 +5,7 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 ## Overview
 
 **Gem**: `lex-agentic-attention`
-**Version**: 0.1.6
+**Version**: 0.1.7
 **Namespace**: `Legion::Extensions::Agentic::Attention`
 
 ## Sub-Modules
@@ -39,13 +39,42 @@ Domain consolidation gem for attention, perception, and signal processing. Bundl
 
 ## Actors
 
-- `Attention::FeatureBinding::Actors::Decay` — interval actor, decays bound feature groups
-- `Attention::Schema::Actors::Decay` — interval actor, decays attention schema entries
+| Actor | Interval | What It Does |
+|-------|----------|--------------|
+| `Arousal::Actor::Update` | Every 30s | Updates arousal level using Yerkes-Dodson model |
+| `Blink::Actor::Decay` | Every 15s | Decays attentional blink suppression window |
+| `FeatureBinding::Actors::Decay` | interval | Decays bound feature groups |
+| `Regulation::Actor::Update` | Every 60s | Applies top-down/bottom-up regulation updates |
+| `Salience::Actor::Compute` | Every 12s | Recomputes salience map from all eight sources |
+| `Schema::Actor::Decay` | Every 30s | Decays attention schema entries |
+| `SignalDetection::Actor::Update` | Every 60s | Updates SDT sensitivity (d') and response bias (beta) |
 
 ## Installation
 
 ```ruby
 gem 'lex-agentic-attention'
+```
+
+## Usage
+
+```ruby
+require 'legion/extensions/agentic/attention'
+
+# Filter incoming signals through the attention focus system
+client = Legion::Extensions::Agentic::Attention::Focus::Client.new
+result = client.filter_signals(signals: incoming, active_wonders: goals)
+# => { filtered: [...], spotlight: 3, peripheral: 2, background: 5, dropped: 1 }
+
+# Check attention economy status
+economy = Legion::Extensions::Agentic::Attention::Economy::Client.new
+economy.attention_economy_status
+# => { total_budget:, spent:, available:, utilization:, demand_count:, ... }
+
+# Focus the spotlight on a specific target
+spotlight = Legion::Extensions::Agentic::Attention::Spotlight::Client.new
+spotlight.register_target(label: 'critical_alert', domain: :safety, salience: 0.9, relevance: 0.9)
+spotlight.focus_spotlight(target_id: '<id>')
+spotlight.release_spotlight
 ```
 
 ## Development
