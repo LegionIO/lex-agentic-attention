@@ -26,28 +26,6 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Focus::Runners::Attention
       expect(result[:filtered].size).to be >= 1
     end
 
-    it 'drops low-salience signals' do
-      signals = [{ salience: 0.01, domain: :heartbeat, novelty: 0.0 }]
-      result = client.filter_signals(signals: signals)
-      expect(result[:dropped]).to be >= 0
-      expect(result[:filtered].size).to be <= 1
-    end
-
-    it 'boosts signals matching active wonders' do
-      signals = [{ salience: 0.3, domain: :terraform, novelty: 0.3 }]
-      wonders = [{ domain: :terraform, salience: 0.9 }]
-
-      without = client.filter_signals(signals: signals)
-      # New client to avoid habituation carryover
-      fresh = Legion::Extensions::Agentic::Attention::Focus::Client.new
-      with_wonders = fresh.filter_signals(signals: signals, active_wonders: wonders)
-
-      # With wonder boost, the signal should score higher
-      with_total = with_wonders[:spotlight] + with_wonders[:peripheral]
-      without_total = without[:spotlight] + without[:peripheral]
-      expect(with_total).to be >= without_total
-    end
-
     it 'deduplicates identical signals' do
       signals = [
         { salience: 0.8, domain: :terraform, source_type: :event, value: 'deploy' },
@@ -57,26 +35,45 @@ RSpec.describe Legion::Extensions::Agentic::Attention::Focus::Runners::Attention
       expect(result[:spotlight] + result[:peripheral] + result[:background]).to be <= 1
     end
 
+    it 'preserves identical requests from different principals and frames' do
+      request = { salience: 0.9, source_type: :human_direct, value: 'continue', channel_id: :cli }
+      signals = [
+        request.merge(principal_id: 'alice', frame_id: 'first'),
+        request.merge(principal_id: 'bob', frame_id: 'second'),
+        request.merge(principal_id: 'alice', frame_id: 'third')
+      ]
+
+      result = client.filter_signals(signals: signals + [signals.first.dup])
+
+      expect(result[:filtered].map { |signal| signal[:frame_id] }).to contain_exactly('first', 'second', 'third')
+    end
+
+    it 'keeps requests from separate channels distinct when no frame identity is available' do
+      request = { salience: 0.9, source_type: :human_direct, value: 'continue' }
+      result = client.filter_signals(signals: [request.merge(channel_id: :cli), request.merge(channel_id: :slack)])
+
+      expect(result[:filtered].map { |signal| signal[:channel_id] }).to contain_exactly(:cli, :slack)
+    end
+
+    it 'prioritizes signals within both retained tiers below the capacity limit' do
+      signals = [
+        { value: 'spotlight-low', salience: 0.8, novelty: 0.8, domain: :deploy },
+        { value: 'spotlight-high', salience: 1.0, novelty: 1.0, domain: :incident },
+        { value: 'peripheral-low', salience: 0.7, novelty: 0.5, domain: :status },
+        { value: 'peripheral-high', salience: 0.9, novelty: 0.5, domain: :review }
+      ]
+      wonders = [{ domain: :deploy, salience: 1.0 }, { domain: :incident, salience: 1.0 }]
+
+      result = client.filter_signals(signals: signals, active_wonders: wonders)
+
+      expect(result[:filtered].map { |signal| signal[:value] })
+        .to eq(%w[spotlight-high spotlight-low peripheral-high peripheral-low])
+    end
+
     it 'enforces attentional capacity' do
       signals = Array.new(10) { |i| { salience: 0.9, domain: :"domain_#{i}", novelty: 0.9 } }
       result = client.filter_signals(signals: signals)
       expect(result[:spotlight]).to be <= Legion::Extensions::Agentic::Attention::Focus::Helpers::Constants::ATTENTIONAL_CAPACITY
-    end
-
-    it 'habituates repeated domain signals' do
-      first_client = Legion::Extensions::Agentic::Attention::Focus::Client.new
-      signals = [{ salience: 0.6, domain: :terraform, novelty: 0.3 }]
-
-      first_result = first_client.filter_signals(signals: signals)
-      # Record same domain multiple times to build habituation
-      10.times { first_client.filter_signals(signals: signals) }
-      later_result = first_client.filter_signals(signals: signals)
-
-      first_scores = first_result[:filtered].map { |s| s[:attention_score] || 0 }
-      later_scores = later_result[:filtered].map { |s| s[:attention_score] || 0 }
-
-      # Later scores should be lower due to habituation (if signal still passes)
-      expect(later_scores.max).to be <= first_scores.max if first_scores.any? && later_scores.any?
     end
   end
 

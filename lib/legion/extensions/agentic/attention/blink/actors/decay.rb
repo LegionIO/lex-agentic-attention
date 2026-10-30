@@ -8,7 +8,7 @@ module Legion
       module Attention
         module Blink
           module Actor
-            class Decay < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
+            class Decay < Legion::Extensions::Actors::Every
               def runner_class
                 Legion::Extensions::Agentic::Attention::Blink::Runners::AttentionalBlink
               end

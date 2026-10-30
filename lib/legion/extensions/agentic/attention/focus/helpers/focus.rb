@@ -67,7 +67,8 @@ module Legion
               def signal_identity(signal)
                 return signal.object_id unless signal.is_a?(Hash)
 
-                [signal[:source_type], signal[:domain], signal[:value]].hash
+                [signal[:source_type], signal[:domain], signal[:principal_id],
+                 signal[:channel_id], signal[:frame_id], signal[:value]]
               end
             end
           end

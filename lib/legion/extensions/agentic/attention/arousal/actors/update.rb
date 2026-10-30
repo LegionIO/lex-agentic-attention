@@ -8,7 +8,7 @@ module Legion
       module Attention
         module Arousal
           module Actor
-            class Update < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
+            class Update < Legion::Extensions::Actors::Every
               def runner_class
                 Legion::Extensions::Agentic::Attention::Arousal::Runners::Arousal
               end

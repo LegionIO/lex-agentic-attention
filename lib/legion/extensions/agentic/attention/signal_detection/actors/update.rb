@@ -8,7 +8,7 @@ module Legion
       module Attention
         module SignalDetection
           module Actor
-            class Update < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
+            class Update < Legion::Extensions::Actors::Every
               def runner_class
                 Legion::Extensions::Agentic::Attention::SignalDetection::Runners::SignalDetection
               end
