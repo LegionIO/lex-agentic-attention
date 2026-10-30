@@ -8,7 +8,7 @@ module Legion
       module Attention
         module Schema
           module Actor
-            class Decay < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
+            class Decay < Legion::Extensions::Actors::Every
               def runner_class
                 Legion::Extensions::Agentic::Attention::Schema::Runners::AttentionSchema
               end

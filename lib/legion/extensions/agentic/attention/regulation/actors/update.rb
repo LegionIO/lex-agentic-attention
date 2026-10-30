@@ -8,7 +8,7 @@ module Legion
       module Attention
         module Regulation
           module Actor
-            class Update < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
+            class Update < Legion::Extensions::Actors::Every
               def runner_class
                 Legion::Extensions::Agentic::Attention::Regulation::Runners::AttentionRegulation
               end

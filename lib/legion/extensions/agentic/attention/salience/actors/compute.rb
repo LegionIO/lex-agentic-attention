@@ -8,7 +8,7 @@ module Legion
       module Attention
         module Salience
           module Actor
-            class Compute < Legion::Extensions::Actors::Every # rubocop:disable Legion/Extension/EveryActorRequiresTime
+            class Compute < Legion::Extensions::Actors::Every
               def runner_class
                 Legion::Extensions::Agentic::Attention::Salience::Runners::Salience
               end

@@ -14,11 +14,11 @@ module Legion
               MAX_LENSES = 8
 
               CLARITY_LABELS = [
-                [0.0..0.2,  :opaque],
-                [0.2..0.4,  :foggy],
-                [0.4..0.6,  :hazy],
-                [0.6..0.8,  :clear],
-                [0.8..1.0,  :crystal]
+                [0.0..0.2, :opaque],
+                [0.2..0.4, :foggy],
+                [0.4..0.6, :hazy],
+                [0.6..0.8, :clear],
+                [0.8..1.0, :crystal]
               ].freeze
 
               MAGNIFICATION_LABELS = [

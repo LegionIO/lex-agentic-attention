@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.8] - 2026-10-29
+### Fixed
+- Preserve principal, channel, and frame identity when deduplicating attention signals.
+- Return retained spotlight and peripheral signals in priority order, including batches below spotlight capacity.
+
 ## [0.1.7] - 2026-04-22
 ### Fixed
 - Renamed Economy `attention_status` to `attention_economy_status` to resolve method collision with Focus

@@ -103,12 +103,14 @@ module Legion
               def enforce_capacity(categorized)
                 capacity = Helpers::Constants::ATTENTIONAL_CAPACITY
                 spotlight = categorized[:spotlight].sort_by { |s| -(s[:attention_score] || 0) }
+                categorized[:spotlight] = spotlight
 
                 if spotlight.size > capacity
                   overflow = spotlight[capacity..]
                   categorized[:spotlight] = spotlight.first(capacity)
                   categorized[:peripheral].concat(overflow)
                 end
+                categorized[:peripheral].sort_by! { |s| -(s[:attention_score] || 0) }
 
                 categorized
               end
