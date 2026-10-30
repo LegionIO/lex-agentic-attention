@@ -32,10 +32,9 @@ module Legion
                 @mappings[mapping.id] = mapping
                 prune_mappings! if @mappings.size > MAX_MAPPINGS
 
-                # rubocop:disable Legion/HelperMigration/DirectLogging
+                # rubocop:disable-next Legion/HelperMigration/DirectLogging
                 Legion::Logging.debug("[cognitive_synesthesia] mapping registered id=#{mapping.id[0..7]} " \
                                       "#{source_modality}->#{target_modality} strength=#{strength.round(2)}")
-                # rubocop:enable Legion/HelperMigration/DirectLogging
 
                 { success: true, mapping_id: mapping.id, source_modality: source_modality,
                   target_modality: target_modality }
@@ -137,10 +136,9 @@ module Legion
                 @events << event
                 @events.shift while @events.size > MAX_EVENTS
 
-                # rubocop:disable Legion/HelperMigration/DirectLogging
+                # rubocop:disable-next Legion/HelperMigration/DirectLogging
                 Legion::Logging.debug("[cognitive_synesthesia] event fired id=#{event.id[0..7]} " \
                                       "mapping=#{mapping.id[0..7]} intensity=#{intensity.round(2)}")
-                # rubocop:enable Legion/HelperMigration/DirectLogging
                 event
               end
 

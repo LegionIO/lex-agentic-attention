@@ -48,13 +48,12 @@ module Legion
                 raise ArgumentError, "stack not found: #{stack_id}" unless stack
 
                 result = stack.view_through(content)
-                # rubocop:disable Legion/HelperMigration/DirectLogging
+                # rubocop:disable-next Legion/HelperMigration/DirectLogging
                 Legion::Logging.debug("[cognitive_lens] view_through stack=#{stack_id} " \
                                       "perceived=#{result[:perceived].round(4)} " \
                                       "magnification=#{result[:combined_magnification].round(2)} " \
                                       "distortion=#{result[:combined_distortion].round(2)} " \
                                       "clarity=#{result[:stack_clarity].round(2)}")
-                # rubocop:enable Legion/HelperMigration/DirectLogging
                 result
               end
 
